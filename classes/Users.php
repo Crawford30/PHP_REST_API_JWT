@@ -29,7 +29,7 @@ class Users {
 
 
 
-//CONSTRUCT FUNCTION
+		//CONSTRUCT FUNCTION
 
 	public function  __construct($db) {
 
@@ -46,7 +46,7 @@ class Users {
 
 	}
 
-//CREATING USERS
+		//CREATING USERS
 
 	public function create_user() {
 
@@ -108,9 +108,40 @@ class Users {
 			return array(); //if not succesful we return empty array
 
 
+		}
 
 
+		//CHECK LOGIN METHOD
+		public function check_login() {
 
+
+			$email_query = "SELECT * FROM ".$this -> users_tbl." WHERE  email = ? ";
+
+			//PREPARE THE QUERY
+
+			$usr_obj = $this -> conn -> prepare($email_query);
+
+
+			//BINDING PARAMETERS
+
+			$usr_obj -> bind_param("s", $this -> email);
+
+
+			//EXECUTE
+
+			if ($usr_obj -> execute()) {
+
+				//if sucessful
+
+				$data = $usr_obj -> get_result();
+
+				return $data -> fetch_assoc();
+
+
+			
+			} 
+
+			return array(); //if not succesful we return empty array
 
 		}
 
