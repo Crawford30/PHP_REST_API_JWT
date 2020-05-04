@@ -4,6 +4,14 @@
 
 ini_set("display_errors", 1);
 
+//INCLUDE VENDER FOLDER
+
+require '../vendor/autoload.php'; //we go back 
+
+use \Firebase\JWT\JWT;
+
+
+
 //HEADERS
 header("Access-Control-Allow-Origin: *");
 
@@ -72,11 +80,57 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			if (password_verify($data -> password, $password))  { //normal password from api, hashed password
 
+
+				//VARIABLE
+
+					$iss = "localhost";
+					$iat = time();
+					$nbf =  $iat + 10; //after 10 seconds
+					$exp = $iat + 30; //should expire after 30 seconds
+					$aud = "myusers"; //using the token for only myusers for exmaple in a website
+
+					$user_arr_data = array(
+
+						"id" => $user_data['id'], //id got from the databae column
+
+						"name" => $user_data['name'],
+
+						"email" => $user_data['email']
+
+					);
+
+					//SECRETE KEY
+
+					$secret_key = "owt125";
+
+
+
+				//PREPARING PAYLOAD INFO
+				$payload_info = array(
+					"iss" => $iss, //issuer
+					"iat" => $iat, //issuer at what time
+					"nbf" => $nbf, //not before(time frame of validity)
+					"exp" => $exp, //expiration at
+					"aud" => $aud, //audience claim
+
+					"data" =>  $user_arr_data
+
+
+				);
+
+
+				//USING JWT
+
+				$jwt = JWT::encode($payload_info, $secret_key); //will return a jwt string 
+
+
+
 				http_response_code(200);
 
 				echo json_encode(array(
 
 				"status" => 1,
+				"jwt" => $jwt,
 				"message" => "User logged in successfully"
 
 				));
