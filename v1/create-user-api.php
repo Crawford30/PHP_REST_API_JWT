@@ -50,7 +50,33 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		$user_obj -> password  = password_hash($data -> password, PASSWORD_DEFAULT);
 
 
-		//WE CALL OUT METHOD create_user
+
+
+		//WE CHECK THE EMAIL TO MAKE SURE ITS NOT REGISTRED WITH
+		
+		$email_data = $user_obj -> check_email();
+
+		if (!empty($email_data)) {
+
+			//means we have some data, insertion should not go
+
+			//means we have email already
+		http_response_code(500); //server
+
+		echo json_encode(array(
+
+		"status" => 0,
+		"message" => "User already exists, please try another email address"
+
+
+	));
+
+
+
+		} else {
+
+
+//WE CALL OUT METHOD create_user
 
 		if ($user_obj -> create_user()) {
 
@@ -86,12 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		}
 
 
+		}
 
 
 
 
-
-
+		
 
 	} else {
 

@@ -50,29 +50,69 @@ class Users {
 
 	public function create_user() {
 
-		$user_query = "INSERT INTO ".$this -> users_tbl." SET  name = ?, email = ?, password = ?";
+			$user_query = "INSERT INTO ".$this -> users_tbl." SET  name = ?, email = ?, password = ?";
 
-		//PREPARE
+			//PREPARE
 
-		$user_obj = $this -> conn -> prepare($user_query);
+			$user_obj = $this -> conn -> prepare($user_query);
 
-		//BINDING PARAMETERS WITH THE PLACE HOLDERS
+			//BINDING PARAMETERS WITH THE PLACE HOLDERS
 
-		$user_obj -> bind_param("sss", $this -> name, $this -> email, $this -> password );
-
-
-		//EXECUTE
-
-		if ($user_obj -> execute()) {
-
-			return true;
-
-		} 
-
-		return false;
+			$user_obj -> bind_param("sss", $this -> name, $this -> email, $this -> password );
 
 
-	}
+			//EXECUTE
+
+			if ($user_obj -> execute()) {
+
+				return true;
+
+			} 
+
+			return false;
+
+
+		}
+
+
+		//METHOD TO CHECK THAT ONLY ONE EMAIL ADDRESSED IS USED
+
+		public function  check_email() {
+
+			$email_query = "SELECT * FROM ".$this -> users_tbl." WHERE  email = ?";
+
+			//PREPARE THE QUERY
+
+			$usr_obj = $this -> conn -> prepare($email_query);
+
+
+			//BINDING PARAMETERS
+
+			$usr_obj -> bind_param("s", $this -> email);
+
+
+			//EXECUTE
+
+			if ($usr_obj -> execute()) {
+
+				//if sucessful
+
+				$data = $usr_obj -> get_result();
+
+				return $data -> fetch_assoc();
+
+
+			
+			} 
+
+			return array(); //if not succesful we return empty array
+
+
+
+
+
+
+		}
 
 
 
