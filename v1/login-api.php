@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 					$iss = "localhost";
 					$iat = time();
 					$nbf =  $iat + 10; //after 10 seconds
-					$exp = $iat + 30; //should expire after 30 seconds
+					$exp = $iat + 60; //should expire after 30 seconds
 					$aud = "myusers"; //using the token for only myusers for exmaple in a website
 
 					$user_arr_data = array(
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 				//USING JWT
 
-				$jwt = JWT::encode($payload_info, $secret_key); //will return a jwt string 
+				$jwt = JWT::encode($payload_info, $secret_key, 'HS512'); //will return a jwt string  where HS512 is algorithm type
 
 
 
