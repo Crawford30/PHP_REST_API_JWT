@@ -191,7 +191,7 @@ class Users {
 	// used to list all projects
   public function get_all_projects(){
 
-    $project_query = "SELECT * FROM ".$this->projects_tbl." ORDER BY id DESC";
+    $project_query = "SELECT * FROM ".$this->projects_tbl."  ORDER BY id DESC";
 
     $project_obj = $this -> conn -> prepare($project_query);
 
@@ -200,6 +200,29 @@ class Users {
     return $project_obj -> get_result();
 
   }
+
+
+  // used to list all projects
+  public function get_user_all_projects(){
+
+    $project_query = "SELECT * FROM ".$this->projects_tbl." WHERE user_id = ? ORDER BY id DESC";
+
+    $project_obj = $this -> conn -> prepare($project_query);
+
+    //BIND PARAMETERS
+
+    $project_obj -> bind_param("i", $this -> user_id);  //user_id from the class variable 
+
+
+
+
+    $project_obj -> execute();
+
+    return $project_obj -> get_result();
+
+  }
+
+
 
 
 
