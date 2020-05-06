@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		try {
 
 
-			//SECRETE KEY use for encoding will be use for decoding data
+					//SECRETE KEY use for encoding will be use for decoding data
 
 					$secret_key = "owt125";
 
@@ -105,12 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 
 		}
-
-
-
-					
-
-
 					
 
 	} else {

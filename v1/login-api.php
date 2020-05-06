@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 					$iss = "localhost";
 					$iat = time();
 					$nbf =  $iat + 10; //after 10 seconds
-					$exp = $iat + 60; //should expire after 30 seconds
+					$exp = $iat + 180; //should expire after 3  seconds
 					$aud = "myusers"; //using the token for only myusers for exmaple in a website
 
 					$user_arr_data = array(

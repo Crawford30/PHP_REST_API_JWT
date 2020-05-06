@@ -1,5 +1,7 @@
 <?php 
 
+ini_set("display_errors", 1);
+
 class Users {
 
 	//DEFINE PROPERTIES
@@ -144,6 +146,62 @@ class Users {
 			return array(); //if not succesful we return empty array
 
 		}
+
+
+
+		//METHOD TO CREATE PROJECTS
+
+		public function create_project() {
+
+			$project_query = "INSERT INTO ".$this -> projects_tbl."  SET user_id = ?, name = ?, description = ?, status = ?";
+
+			//PREPARE
+
+			$project_obj = $this -> conn -> prepare($project_query);
+
+			//SANITIZE INPUT VARIABLES
+			$project_name = htmlspecialchars(strip_tags($this -> project_name));
+
+			$description = htmlspecialchars(strip_tags($this -> description));
+
+			$status = htmlspecialchars(strip_tags($this -> status));
+
+
+			//BINDING THE PARAMETERS
+			$project_obj -> bind_param("isss", $this -> user_id, $this -> project_name, $this -> description, $this -> status); //from the project table, we have user_id, project_name, description,status
+
+			//CHECK AND EXECUTE THE QUERY
+
+			if ($project_obj -> execute()) {
+
+				return true;
+			}
+
+			return false;
+
+
+		}
+
+
+
+		
+
+
+
+	// used to list all projects
+  public function get_all_projects(){
+
+    $project_query = "SELECT * FROM ".$this->projects_tbl." ORDER BY id DESC";
+
+    $project_obj = $this -> conn -> prepare($project_query);
+
+    $project_obj -> execute();
+
+    return $project_obj -> get_result();
+
+  }
+
+
 
 
 
